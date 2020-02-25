@@ -1,5 +1,7 @@
 <template>
-  <view class="container">首页</view>
+  <view class="container">
+    <text class="iconfont iconvideocamera"></text>
+  </view>
 </template>
 
 <script>
