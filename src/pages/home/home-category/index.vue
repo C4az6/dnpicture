@@ -4,10 +4,10 @@
 
 <script>
 export default {
-    mounted () {
+  mounted() {
     // 修改页面的标题
     uni.setNavigationBarTitle({
-      title: '分类'
+      title: "分类"
     });
   }
 };
