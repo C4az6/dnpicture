@@ -1,5 +1,5 @@
 <template>
-  <view>
+  <view v-if="recommends.length>0">
     <!-- 推荐start -->
     <view class="recommend-wrap">
       <view class="recommend-item" v-for="item in recommends" :key="item.id">
@@ -13,7 +13,8 @@
       <view class="months-title">
         <view class="months-title-info">
           <view class="months-info">
-            <text>{{months.MM}} / </text>{{months.DD}} 月
+            <text>{{months.MM}} /</text>
+            {{months.DD}} 月
           </view>
           <view class="months-text">{{months.title}}</view>
         </view>
@@ -26,19 +27,34 @@
       </view>
     </view>
     <!-- 月份 end -->
+
+    <!-- 热门 start -->
+    <view class="hot-wrap">
+      <view class="hot-title">
+        <text>热门</text>
+      </view>
+      <view class="hot-content">
+        <view class="hot-item" v-for="item in hots" :key="item.id">
+          <image :src="item.thumb" mode="widthFix" />
+        </view>
+      </view>
+    </view>
+    <!-- 热门 end -->
   </view>
 </template>
 
 <script>
 // 引入moment库
-import moment from 'moment';
+import moment from "moment";
 export default {
   data() {
     return {
       // 推荐列表数据
       recommends: [],
       // 月份模块
-      months: {}
+      months: {},
+      // 热门
+      hots: []
     };
   },
   mounted() {
@@ -58,6 +74,10 @@ export default {
       // 将时间戳改成 18号 / 月
       this.months.MM = moment(this.months.stime).format("MM");
       this.months.DD = moment(this.months.stime).format("DD");
+
+      // 获取热门数据列表
+      this.hots = data.res.vertical;
+      console.log(this.hots);
     });
   }
 };
@@ -116,4 +136,29 @@ export default {
   }
 }
 /* 月份 end */
+
+/* 热门 start */
+.hot-wrap {
+  .hot-title {
+    padding: 20rpx;
+    text {
+      padding-left: 20rpx;
+      color: $color;
+      font-size: 28rpx;
+      border-left: 10rpx solid $color;
+      font-weight: 600;
+    }
+  }
+  .hot-content {
+    display: flex;
+    flex-wrap: wrap;
+    .hot-item {
+      width: 33.33%;
+      border: 5rpx solid #fff;
+      image {
+      }
+    }
+  }
+}
+/* 热门 end */
 </style>
