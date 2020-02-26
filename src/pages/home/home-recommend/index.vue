@@ -1,5 +1,5 @@
 <template>
-  <view v-if="recommends.length>0">
+  <scroll-view class="recommend-view" @scrolltolower="handleToLower" scroll-y v-if="recommends.length>0">
     <!-- 推荐start -->
     <view class="recommend-wrap">
       <view class="recommend-item" v-for="item in recommends" :key="item.id">
@@ -40,7 +40,7 @@
       </view>
     </view>
     <!-- 热门 end -->
-  </view>
+  </scroll-view>
 </template>
 
 <script>
@@ -77,13 +77,21 @@ export default {
 
       // 获取热门数据列表
       this.hots = data.res.vertical;
-      console.log(this.hots);
     });
+  },
+  methods: {
+    handleToLower(e){
+      console.log("触底啦...");
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.recommend-view {
+  // height: 屏幕的高度 - 头部标题的高度
+  height: calc(100vh - 36px);
+}
 /* 推荐 start */
 .recommend-wrap {
   display: flex;
