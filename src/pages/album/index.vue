@@ -45,7 +45,8 @@ export default {
       },
       id: -1,
       album: {},
-      wallpaper: []
+      wallpaper: [],
+      hasLimit: true
     };
   },
   methods: {
@@ -54,15 +55,31 @@ export default {
         url: `http://157.122.54.189:9088/image/v1/wallpaper/album/${this.id}/wallpaper`,
         data: this.params
       }).then(data => {
-        this.album = data.res.album;
-        this.wallpaper = data.res.wallpaper;
+        if (Object.keys(this.album).length === 0) {
+          this.album = data.res.album;
+        }
+        if (data.res.wallpaper.length === 0) {
+          getApp().noDataToast();
+          this.hasLimit = false;
+          return;
+        }
+        this.wallpaper = [...this.wallpaper, ...data.res.wallpaper];
       });
     }
   },
   onLoad(options) {
-    // this.id = options.id;
-    this.id = "5e26b92be7bce739af7644b3";
+    this.id = options.id;
     this.getList();
+  },
+  // 上拉触底事件
+  onReachBottom() {
+    if (this.hasLimit) {
+      this.params.first = 0;
+      this.params.skip += this.params.limit;
+      this.getList();
+    } else {
+      getApp().noDataToast();
+    }
   }
 };
 </script>

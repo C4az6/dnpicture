@@ -74,6 +74,7 @@ export default {
           this.bannerList = data.res.banner;
         }
         if (data.res.album.length === 0) {
+          getApp().noDataToast();
           this.hasLimit = false;
           return;
         }
@@ -85,10 +86,7 @@ export default {
         this.params.skip += this.params.limit;
         this.getList();
       } else {
-        uni.showToast({
-          title: "没有数据了",
-          icon: "none"
-        });
+        getApp().noDataToast();
       }
     }
   }

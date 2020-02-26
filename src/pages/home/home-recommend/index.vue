@@ -86,6 +86,7 @@ export default {
         // 判断是否还有数据
         if (data.res.vertical.length === 0) {
           // 没有分页数据了
+          getApp().noDataToast();
           this.hasLimit = false;
           return;
         }
@@ -112,10 +113,7 @@ export default {
         this.params.skip += this.params.limit;
         this.getList();
       } else {
-        uni.showToast({
-          title: "没有数据了",
-          icon: "none"
-        });
+        getApp().noDataToast();
       }
     }
   }
