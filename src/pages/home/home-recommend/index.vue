@@ -13,24 +13,32 @@
       <view class="months-title">
         <view class="months-title-info">
           <view class="months-info">
-            <text>18/</text>01 月
+            <text>{{months.MM}} / </text>{{months.DD}} 月
           </view>
-          <view class="months-text">你负责美丽就好</view>
+          <view class="months-text">{{months.title}}</view>
         </view>
         <view class="months-title-more">更多 ></view>
       </view>
-      <view class="months-content"></view>
+      <view class="months-content">
+        <view class="months-item" v-for="item in months.items" :key="item.id">
+          <image :src="item.thumb + item.rule.replace('$<Height>', 360)" mode="aspectFill" />
+        </view>
+      </view>
     </view>
     <!-- 月份 end -->
   </view>
 </template>
 
 <script>
+// 引入moment库
+import moment from 'moment';
 export default {
   data() {
     return {
       // 推荐列表数据
-      recommends: []
+      recommends: [],
+      // 月份模块
+      months: {}
     };
   },
   mounted() {
@@ -44,9 +52,12 @@ export default {
         // 要跳过几条
         skip: 0
       }
-    }).then(res => {
-      console.log(res.res);
-      this.recommends = res.res.homepage[1].items;
+    }).then(data => {
+      this.recommends = data.res.homepage[1].items;
+      this.months = data.res.homepage[2];
+      // 将时间戳改成 18号 / 月
+      this.months.MM = moment(this.months.stime).format("MM");
+      this.months.DD = moment(this.months.stime).format("DD");
     });
   }
 };
@@ -96,6 +107,12 @@ export default {
   }
 
   .months-content {
+    display: flex;
+    flex-wrap: wrap;
+    .months-item {
+      width: 33.33%;
+      border: 5rpx solid #fff;
+    }
   }
 }
 /* 月份 end */
