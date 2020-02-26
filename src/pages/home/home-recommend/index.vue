@@ -7,9 +7,9 @@
   >
     <!-- 推荐start -->
     <view class="recommend-wrap">
-      <view class="recommend-item" v-for="item in recommends" :key="item.id">
+      <navigator class="recommend-item" v-for="item in recommends" :key="item.id" :url="`/pages/album/index?id=${item.target}`">
         <image :src="item.thumb" mode="widthFix" />
-      </view>
+      </navigator>
     </view>
     <!-- 推荐end -->
 
