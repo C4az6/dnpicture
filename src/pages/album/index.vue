@@ -24,8 +24,10 @@
 
     <!-- 专辑图片 start -->
     <view class="album-image">
-      <view class="album-item" v-for="item in wallpaper" :key="item.id">
-        <image :src="item.thumb+item.rule.replace('$<Height>',360)" />
+      <view class="album-item" v-for="(item, index) in wallpaper" :key="item.id">
+        <go-detail :list="wallpaper" :index="index">
+          <image :src="item.thumb+item.rule.replace('$<Height>',360)" />
+        </go-detail>
       </view>
     </view>
     <!-- 专辑图片 end -->
@@ -33,6 +35,7 @@
 </template>
 
 <script>
+import goDetail from "@/components/goDetail";
 export default {
   data() {
     return {
@@ -71,7 +74,7 @@ export default {
     this.id = options.id;
     this.getList();
   },
-  // 上拉触底事件
+  // 上拉触底事件,这个是生命周期函数,因此不能写在methods方法里面
   onReachBottom() {
     if (this.hasLimit) {
       this.params.first = 0;
@@ -80,6 +83,9 @@ export default {
     } else {
       getApp().noDataToast();
     }
+  },
+  components: {
+    goDetail
   }
 };
 </script>
