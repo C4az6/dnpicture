@@ -1,5 +1,10 @@
 <template>
-  <scroll-view class="recommend-view" @scrolltolower="handleToLower" scroll-y v-if="recommends.length>0">
+  <scroll-view
+    class="recommend-view"
+    @scrolltolower="handleToLower"
+    scroll-y
+    v-if="recommends.length>0"
+  >
     <!-- 推荐start -->
     <view class="recommend-wrap">
       <view class="recommend-item" v-for="item in recommends" :key="item.id">
@@ -54,34 +59,65 @@ export default {
       // 月份模块
       months: {},
       // 热门
-      hots: []
-    };
-  },
-  mounted() {
-    this.request({
-      url: "http://157.122.54.189:9088/image/v3/homepage/vertical",
-      data: {
+      hots: [],
+      // 请求的参数
+      params: {
         // 要获取几条
         limit: 30,
         // 关键字
         order: "hot",
         // 要跳过几条
         skip: 0
-      }
-    }).then(data => {
-      this.recommends = data.res.homepage[1].items;
-      this.months = data.res.homepage[2];
-      // 将时间戳改成 18号 / 月
-      this.months.MM = moment(this.months.stime).format("MM");
-      this.months.DD = moment(this.months.stime).format("DD");
-
-      // 获取热门数据列表
-      this.hots = data.res.vertical;
-    });
+      },
+      // 是否还有分页数据
+      hasLimit: true
+    };
+  },
+  mounted() {
+    this.getList();
   },
   methods: {
-    handleToLower(e){
-      console.log("触底啦...");
+    // 获取列表数据
+    getList() {
+      this.request({
+        url: "http://157.122.54.189:9088/image/v3/homepage/vertical",
+        data: this.params
+      }).then(data => {
+        // 判断是否还有数据
+        if (data.res.vertical.length === 0) {
+          // 没有分页数据了
+          this.hasLimit = false;
+          return;
+        }
+        // 第一次请求数据
+        if (this.recommends.length === 0) {
+          this.recommends = data.res.homepage[1].items;
+          this.months = data.res.homepage[2];
+          // 将时间戳改成 18号 / 月
+          this.months.MM = moment(this.months.stime).format("MM");
+          this.months.DD = moment(this.months.stime).format("DD");
+        }
+
+        // 获取热门数据列表
+        this.hots = [...this.hots, ...data.res.vertical];
+      });
+    },
+    handleToLower(e) {
+      /* 
+      1 修改参数 skip+=limit
+      2 重新调函数发送请求
+      3 请求回来成功 hots 数据叠加,使用拓展运算符...
+      */
+      if (this.hasLimit) {
+        this.params.skip += this.params.limit;
+        console.log(typeof this.params.skip);
+        this.getList();
+      } else {
+        uni.showToast({
+          title: "没有数据了",
+          icon: "none"
+        });
+      }
     }
   }
 };
