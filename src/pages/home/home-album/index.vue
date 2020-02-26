@@ -1,5 +1,5 @@
 <template>
-  <view>
+  <scroll-view class="scroll" scroll-y @scrolltolower="handleLower">
     <!-- 微信小程序轮播图知识
     1 自动轮播  autoplay
     2 指示器    indicator-dots
@@ -37,7 +37,7 @@
       </view>
     </view>
     <!-- 列表 end -->
-  </view>
+  </scroll-view>
 </template>
 
 <script>
@@ -53,7 +53,8 @@ export default {
       // 轮播图数组
       bannerList: [],
       // 专辑数组
-      album: []
+      album: [],
+      hasLimit: true
     };
   },
   mounted() {
@@ -69,15 +70,36 @@ export default {
         url: "http://157.122.54.189:9088/image/v1/wallpaper/album",
         data: this.params
       }).then(data => {
-        this.bannerList = data.res.banner;
-        this.album = data.res.album;
+        if (this.bannerList.length === 0) {
+          this.bannerList = data.res.banner;
+        }
+        if (data.res.album.length === 0) {
+          this.hasLimit = false;
+          return;
+        }
+        this.album = [...this.album, ...data.res.album];
       });
+    },
+    handleLower(e) {
+      if (this.hasLimit) {
+        this.params.skip += this.params.limit;
+        this.getList();
+      } else {
+        uni.showToast({
+          title: "没有数据了",
+          icon: "none"
+        });
+      }
     }
   }
 };
 </script>
 
 <style lang="scss">
+.scroll {
+  height: calc(100vh - 36px);
+}
+
 .album-swiper {
   .swiper {
     height: calc(750rpx / 2.3);
