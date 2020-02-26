@@ -15,7 +15,7 @@
     <view class="album-swiper">
       <swiper class="swiper" indicator-dots autoplay circular>
         <swiper-item v-for="item in bannerList" :key="item.id">
-            <image :src="item.thumb"/>
+          <image :src="item.thumb" />
         </swiper-item>
       </swiper>
     </view>
@@ -23,10 +23,14 @@
 
     <!-- 列表 start -->
     <view class="album-list">
-      <navigator class="album-item" v-for="item in album" :key="item.id" :url='`/pages/album/index?id=${item.id}`'>
+      <navigator
+        class="album-item"
+        v-for="item in album"
+        :key="item.id"
+        :url="`/pages/album/index?id=${item.id}`"
+      >
         <view class="item-image">
-          
-          <image :src="item.cover" mode="aspectFill"/>
+          <image :src="item.cover" mode="aspectFill" />
         </view>
         <view class="item.info">
           <view class="item-name">{{item.name}}</view>
@@ -56,7 +60,7 @@ export default {
       bannerList: [],
       // 专辑数组
       album: [],
-      hasLimit: true,
+      hasLimit: true
     };
   },
   mounted() {
