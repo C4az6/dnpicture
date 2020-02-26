@@ -7,7 +7,12 @@
   >
     <!-- 推荐start -->
     <view class="recommend-wrap">
-      <navigator class="recommend-item" v-for="item in recommends" :key="item.id" :url="`/pages/album/index?id=${item.target}`">
+      <navigator
+        class="recommend-item"
+        v-for="item in recommends"
+        :key="item.id"
+        :url="`/pages/album/index?id=${item.target}`"
+      >
         <image :src="item.thumb" mode="widthFix" />
       </navigator>
     </view>
@@ -26,8 +31,10 @@
         <view class="months-title-more">更多 ></view>
       </view>
       <view class="months-content">
-        <view class="months-item" v-for="item in months.items" :key="item.id">
-          <image :src="item.thumb + item.rule.replace('$<Height>', 360)" mode="aspectFill" />
+        <view class="months-item" v-for="(item, index) in months.items" :key="item.id">
+          <go-detail :list="months.items" :index="index">
+            <image :src="item.thumb + item.rule.replace('$<Height>', 360)" mode="aspectFill" />
+          </go-detail>
         </view>
       </view>
     </view>
@@ -51,7 +58,11 @@
 <script>
 // 引入moment库
 import moment from "moment";
+import goDetail from "@/components/goDetail";
 export default {
+  components: {
+    goDetail
+  },
   data() {
     return {
       // 推荐列表数据
