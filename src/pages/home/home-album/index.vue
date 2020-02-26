@@ -23,9 +23,9 @@
 
     <!-- 列表 start -->
     <view class="album-list">
-      <view class="album-item" v-for="item in album" :key="item.id">
+      <navigator class="album-item" v-for="item in album" :key="item.id" :url='`/pages/album/index?id=${item.id}`'>
         <view class="item-image">
-          <image :src="item.cover" />
+          <image :src="item.cover" mode="aspectFill"/>
         </view>
         <view class="item.info">
           <view class="item-name">{{item.name}}</view>
@@ -34,7 +34,7 @@
             <view class="btn">+ 关注</view>
           </view>
         </view>
-      </view>
+      </navigator>
     </view>
     <!-- 列表 end -->
   </scroll-view>
@@ -54,7 +54,7 @@ export default {
       bannerList: [],
       // 专辑数组
       album: [],
-      hasLimit: true
+      hasLimit: true,
     };
   },
   mounted() {
