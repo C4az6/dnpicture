@@ -1,8 +1,27 @@
 <template>
   <view>
+    <!-- 推荐start -->
     <view class="recommend-wrap">
-        <image :src="item.thumb" mode="widthFix" v-for="(item) in recommends" :key="item.id" />
+      <view class="recommend-item" v-for="item in recommends" :key="item.id">
+        <image :src="item.thumb" mode="widthFix" />
+      </view>
     </view>
+    <!-- 推荐end -->
+
+    <!-- 月份 start -->
+    <view class="months-wrap">
+      <view class="months-title">
+        <view class="months-title-info">
+          <view class="months-info">
+            <text>18/</text>01 月
+          </view>
+          <view class="months-text">你负责美丽就好</view>
+        </view>
+        <view class="months-title-more">更多 ></view>
+      </view>
+      <view class="months-content"></view>
+    </view>
+    <!-- 月份 end -->
   </view>
 </template>
 
@@ -34,12 +53,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .recommend-wrap {
+/* 推荐 start */
+.recommend-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  .recommend-item {
+    width: 50%;
+    border: 5rpx solid #fff;
+  }
+}
+/* 推荐 end */
+
+/* 月份 start */
+.months-wrap {
+  .months-title {
     display: flex;
-    flex-wrap: wrap;
-    >image {
-      width: 50%;
-      border: 5rpx solid #fff;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20rpx;
+    .months-title-info {
+      display: flex;
+      color: $color;
+      font-size: 30rpx;
+      font-weight: 600;
+      .months-info {
+        text {
+          font-size: 36rpx;
+        }
+      }
+
+      .months-text {
+        padding-left: 30rpx;
+        font-size: 34rpx;
+        color: #666;
+      }
+    }
+
+    .months-title-more {
+      color: $color;
+      font-size: 26rpx;
     }
   }
+
+  .months-content {
+  }
+}
+/* 月份 end */
 </style>
