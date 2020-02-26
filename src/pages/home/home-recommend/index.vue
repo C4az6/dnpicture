@@ -110,7 +110,6 @@ export default {
       */
       if (this.hasLimit) {
         this.params.skip += this.params.limit;
-        console.log(typeof this.params.skip);
         this.getList();
       } else {
         uni.showToast({

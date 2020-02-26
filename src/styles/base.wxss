@@ -19,3 +19,9 @@ image{
   width: 100%;
   display: block;
 }
+
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

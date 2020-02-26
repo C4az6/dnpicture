@@ -11,13 +11,32 @@
     7 把图片的比例也写到swiper标签样式中去
     8 swiper-item 默认宽高是继承父元素的100%
     -->
+    <!-- 轮播图 start -->
     <view class="album-swiper">
       <swiper class="swiper" indicator-dots autoplay circular>
         <swiper-item v-for="item in bannerList" :key="item.id">
-          <image :src="item.thumb"/>
+          <image :src="item.thumb" />
         </swiper-item>
       </swiper>
     </view>
+    <!-- 轮播图 end -->
+
+    <!-- 列表 start -->
+    <view class="album-list">
+      <view class="album-item" v-for="item in album" :key="item.id">
+        <view class="item-image">
+          <image :src="item.cover" />
+        </view>
+        <view class="item.info">
+          <view class="item-name">{{item.name}}</view>
+          <view class="item-desc ellipsis">{{item.desc}}</view>
+          <view class="item-attention">
+            <view class="btn">+ 关注</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 列表 end -->
   </view>
 </template>
 
@@ -59,13 +78,57 @@ export default {
 </script>
 
 <style lang="scss">
-  .album-swiper {
-    .swiper {
-      height: calc(750rpx / 2.3);
-      // height: 326rpx;
+.album-swiper {
+  .swiper {
+    height: calc(750rpx / 2.3);
+    // height: 326rpx;
+    image {
+      height: 100%;
+    }
+  }
+}
+
+.album-list {
+  padding: 10rpx;
+  .album-item {
+    display: flex;
+    padding: 10rpx;
+    border-bottom: 1rpx solid #ccc;
+    .item-image {
+      flex: 1;
       image {
-        height: 100%;
+        width: 200rpx;
+        height: 200rpx;
+      }
+    }
+
+    .item.info {
+      flex: 2;
+      padding: 10rpx;
+      overflow: hidden;
+      .item-name {
+        font-size: 28rpx;
+        color: #000;
+      }
+
+      .item-desc {
+        font-size: 24rpx;
+        color: #666;
+        padding: 10rpx 0;
+      }
+
+      .item-attention {
+        display: flex;
+        justify-content: flex-end;
+        padding: 10rpx 0;
+        .btn {
+          border: 2rpx solid $color;
+          padding: 5rpx;
+          font-size: 26rpx;
+          color: $color;
+        }
       }
     }
   }
+}
 </style>
