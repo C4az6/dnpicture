@@ -1,5 +1,6 @@
 <template>
   <view>
+    <!-- 专辑背景 start -->
     <view class="album-bg">
       <image :src="album.cover" mode="widthFix" />
       <view class="album-title">
@@ -7,6 +8,27 @@
         <view class="album-btn">关注专辑</view>
       </view>
     </view>
+    <!-- 专辑背景 end -->
+
+    <!-- 专辑作者 start -->
+    <view class="album-author">
+      <view class="album-title">
+        <image :src="album.user.avatar" mode="widthFix" />
+        <view class="album-name">{{album.user.name}}</view>
+      </view>
+      <view class="album-desc">
+        <text>{{album.desc}}</text>
+      </view>
+    </view>
+    <!-- 专辑作者 end -->
+
+    <!-- 专辑图片 start -->
+    <view class="album-image">
+      <view class="album-item" v-for="item in wallpaper" :key="item.id">
+        <image :src="item.thumb+item.rule.replace('$<Height>',360)" />
+      </view>
+    </view>
+    <!-- 专辑图片 end -->
   </view>
 </template>
 
@@ -71,6 +93,43 @@ export default {
       color: #fff;
       padding: 15rpx;
       border-radius: 10rpx;
+    }
+  }
+}
+
+.album-author {
+  padding: 15rpx;
+  .album-title {
+    display: flex;
+    image {
+      width: 50rpx;
+    }
+
+    .album-name {
+      font-size: 26rpx;
+      color: #000;
+      margin-left: 10rpx;
+    }
+  }
+
+  .album-desc {
+    margin-top: 5rpx;
+    text {
+      font-size: 24rpx;
+      color: #666;
+    }
+  }
+}
+
+.album-image {
+  display: flex;
+  flex-wrap: wrap;
+  .album-item {
+    width: 33.33%;
+    image {
+      // width: 200rpx;
+      height: 200rpx;
+      border: 3rpx solid #fff;
     }
   }
 }
