@@ -37,7 +37,7 @@ export default {
       } else {
         return;
       }
-      this.$emit("swiperAction", {direction: this.direction});
+      this.$emit("swiperAction", { direction: this.direction });
     }
   }
 };

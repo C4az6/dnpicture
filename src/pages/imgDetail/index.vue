@@ -117,19 +117,22 @@ export default {
       imgInfo: {},
       album: [],
       hot: [],
-      comment: []
+      comment: [],
+      imgIndex: 0
     };
   },
   onLoad() {
-    const { imgList, imgIndex } = getApp().globalData;
-    this.imgInfo = imgList[imgIndex];
-    // this.imgInfo.thumb2 = this.imgInfo.thumb + this.imgInfo.rule.replace("$<Height>", 360);
-    this.imgInfo.cntime = moment(this.imgInfo.atime * 1000).fromNow();
-
-    // 获取图片详情的id
-    this.getComments(this.imgInfo.id);
+    const { imgIndex } = getApp().globalData;
+    this.imgIndex = imgIndex;
+    this.getList();
   },
   methods: {
+    getList() {
+      const {imgList} = getApp().globalData;
+      this.imgInfo = imgList[this.imgIndex];
+      this.imgInfo.cntime = moment(this.imgInfo.atime * 1000).fromNow();
+      this.getComments(this.imgInfo.id);
+    },
     getComments(id) {
       this.request({
         url: `http://157.122.54.189:9088/image/v2/wallpaper/wallpaper/${id}/comment`
@@ -146,8 +149,26 @@ export default {
         );
       });
     },
-    handleSwiperAction(e){
-      console.log(e);
+    handleSwiperAction(e) {
+      const {imgList} = getApp().globalData;
+      /* 
+        1 用户左滑 加载上一页 
+        2 用户右滑 加载下一页
+        3 将以前发送请求的代码封装成函数 getList()
+        4 减少没有必要的赋值
+        5 调用函数前判断用户的手势操作
+      */
+      // imgList.length - 1是因为imgIndex是从0开始计算的
+      if(e.direction === 'left' && imgList.length-1 >this.imgIndex){
+        this.imgIndex++;
+        this.getList();
+      }else if(e.direction === 'right' && this.imgIndex > 0) {
+        this.imgIndex--;
+        this.getList();
+      }else {
+        getApp().noDataToast();
+        return;
+      }
     }
   }
 };
