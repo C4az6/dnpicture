@@ -106,6 +106,12 @@
       </view>
     </view>
     <!-- 最热评论 end -->
+
+    <!-- 下载图片 start -->
+    <view class="download-wrap">
+      <view class="download-btn" @click="handleDownload">下载图片</view>
+    </view>
+    <!-- 下载图片 end -->
   </view>
 </template>
 
@@ -133,6 +139,36 @@ export default {
     this.getList();
   },
   methods: {
+    // 下载图片函数
+    async handleDownload(){
+      /* 使用的2个API
+        1 uni.downloadFile
+        2 uni.saveImageToPhotosAlbum
+      */
+     // 提示用户正在下载
+     await uni.showLoading({
+       title: '下载中'
+     });
+     // 1 将远程文件下载到小程序的内存中 tempFilePath
+     const result1 = await uni.downloadFile({url: this.imgInfo.img});
+     const {tempFilePath} = result1[1];
+
+     // 2 将小程序内存中的临时文件下载到本地上
+     const result2 = await uni.saveImageToPhotosAlbum({filePath: tempFilePath});
+     console.log(result2);
+     if(result2.length === 1) {
+       // 4 用户取消下载了
+       await uni.showToast({
+         title: '下载失败',
+         icon: "none"
+       });
+       return;
+     }
+     // 3 提示用户下载成功
+     await uni.showToast({
+       title: '下载成功'
+     });
+    },
     getList() {
       const { imgList } = getApp().globalData;
       this.imgInfo = imgList[this.imgIndex];
@@ -353,6 +389,26 @@ export default {
   .iconfont {
     color: #92bdd8;
     font-size: 40rpx;
+  }
+}
+
+/* 下载图片 */
+.download-wrap {
+  height: 120rpx;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  padding: 20rpx;
+  .download-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 85%;
+    font-weight: 600;
+    color: #fff;
+    font-size: 38rpx;
+    background-color: #e13a79;
   }
 }
 </style>
