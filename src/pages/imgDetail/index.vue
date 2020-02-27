@@ -55,7 +55,7 @@
         <view class="comment-item" v-for="item in hot" :key="item.id">
           <view class="user-info">
             <view class="user-avatar">
-              <image :src="item.user.avatar" mode="widthFix"/>
+              <image :src="item.user.avatar" mode="widthFix" />
             </view>
             <view class="user-name">
               <view class="user-nikename">{{item.user.name}}</view>
@@ -83,7 +83,7 @@
         <view class="comment-item" v-for="item in comment" :key="item.id">
           <view class="user-info">
             <view class="user-avatar">
-              <image :src="item.user.avatar" mode="widthFix"/>
+              <image :src="item.user.avatar" mode="widthFix" />
             </view>
             <view class="user-name">
               <view class="user-nikename">{{item.user.name}}</view>
@@ -128,13 +128,16 @@ export default {
       this.request({
         url: `http://157.122.54.189:9088/image/v2/wallpaper/wallpaper/${id}/comment`
       }).then(data => {
-        console.log("current image info：", data.res);
         this.album = data.res.album;
         this.hot = data.res.hot;
         this.comment = data.res.comment;
 
-        data.res.hot.forEach(v=>v.cnTime=moment(v.atime*1000).fromNow());
-        data.res.comment.forEach(v=>v.cnTime=moment(v.atime*1000).fromNow());
+        data.res.hot.forEach(
+          v => (v.cnTime = moment(v.atime * 1000).fromNow())
+        );
+        data.res.comment.forEach(
+          v => (v.cnTime = moment(v.atime * 1000).fromNow())
+        );
       });
     }
   }
