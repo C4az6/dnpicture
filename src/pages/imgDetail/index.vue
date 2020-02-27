@@ -14,7 +14,7 @@
 
     <!-- 图片部分 start -->
     <view class="img-bg">
-      <image :src="imgInfo.thumb2" mode="widthFix" />
+      <image :src="imgInfo.thumb" mode="widthFix" />
     </view>
     <!-- 图片部分 end -->
 
@@ -31,7 +31,7 @@
       <view class="album-list">
         <view class="album-item" v-for="item in album" :key="item.id">
           <view class="album-image">
-            <image :src="item.cover" mode="aspectFill"/>
+            <image :src="item.cover" mode="aspectFill" />
           </view>
           <view class="album-info">
             <view class="album-text">专辑</view>
@@ -42,6 +42,62 @@
       </view>
     </view>
     <!-- 专辑信息 end -->
+
+    <!-- 最热评论 start -->
+    <view class="comment-wrap hot" v-if="hot.length">
+      <!-- 标题 -->
+      <view class="comment-title">
+        <text class="iconfont iconhot1"></text>
+        <text class="title-text">最热评论</text>
+      </view>
+      <!-- 评论内容 -->
+      <view class="comment-list">
+        <view class="comment-item" v-for="item in hot" :key="item.id">
+          <view class="user-info">
+            <view class="user-avatar">
+              <image :src="item.user.avatar" mode="widthFix"/>
+            </view>
+            <view class="user-name">
+              <view class="user-nikename">{{item.user.name}}</view>
+              <view class="user-time">{{item.cnTime}}</view>
+            </view>
+          </view>
+          <view class="comment-conent">
+            <text class="comment-text">{{item.content}}</text>
+            <text class="iconfont icondianzan">{{item.size}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 最热评论 end -->
+
+    <!-- 最新评论 start -->
+    <view class="comment-wrap new" v-if="comment.length">
+      <!-- 标题 -->
+      <view class="comment-title">
+        <text class="iconfont iconpinglun"></text>
+        <text class="title-text">最新评论</text>
+      </view>
+      <!-- 评论内容 -->
+      <view class="comment-list">
+        <view class="comment-item" v-for="item in comment" :key="item.id">
+          <view class="user-info">
+            <view class="user-avatar">
+              <image :src="item.user.avatar" mode="widthFix"/>
+            </view>
+            <view class="user-name">
+              <view class="user-nikename">{{item.user.name}}</view>
+              <view class="user-time">{{item.cnTime}}</view>
+            </view>
+          </view>
+          <view class="comment-conent">
+            <text class="comment-text">{{item.content}}</text>
+            <text class="iconfont icondianzan">{{item.size}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 最热评论 end -->
   </view>
 </template>
 
@@ -53,14 +109,15 @@ export default {
   data() {
     return {
       imgInfo: {},
-      album: []
+      album: [],
+      hot: [],
+      comment: []
     };
   },
   onLoad() {
     const { imgList, imgIndex } = getApp().globalData;
     this.imgInfo = imgList[imgIndex];
-    this.imgInfo.thumb2 =
-      this.imgInfo.thumb + this.imgInfo.rule.replace("$<Height>", 360);
+    // this.imgInfo.thumb2 = this.imgInfo.thumb + this.imgInfo.rule.replace("$<Height>", 360);
     this.imgInfo.cntime = moment(this.imgInfo.atime * 1000).fromNow();
 
     // 获取图片详情的id
@@ -71,12 +128,13 @@ export default {
       this.request({
         url: `http://157.122.54.189:9088/image/v2/wallpaper/wallpaper/${id}/comment`
       }).then(data => {
+        console.log("current image info：", data.res);
         this.album = data.res.album;
         this.hot = data.res.hot;
         this.comment = data.res.comment;
-        console.log(this.album);
-        console.log(this.hot);
-        console.log(this.comment);
+
+        data.res.hot.forEach(v=>v.cnTime=moment(v.atime*1000).fromNow());
+        data.res.comment.forEach(v=>v.cnTime=moment(v.atime*1000).fromNow());
       });
     }
   }
@@ -113,6 +171,7 @@ export default {
 
 .img-bg {
   image {
+    border-bottom: 1rpx solid #eee;
   }
 }
 
@@ -180,6 +239,73 @@ export default {
         }
       }
     }
+  }
+}
+
+/* 最热评论 */
+.comment-wrap {
+  padding: 10rpx;
+  .comment-title {
+    text.iconfont.iconhot1 {
+      font-size: 40rpx;
+      color: #ff1200;
+    }
+    text.title-text {
+      margin-left: 10rpx;
+      font-weight: 600;
+      color: #000;
+    }
+  }
+
+  .comment-list {
+    .comment-item {
+      padding-top: 20px;
+      border-bottom: 15rpx solid #eee;
+      .user-info {
+        display: flex;
+        .user-avatar {
+          width: 15%;
+          image {
+          }
+        }
+
+        .user-name {
+          flex: 1;
+          margin-left: 20rpx;
+          .user-nikename {
+            color: #666;
+          }
+
+          .user-time {
+            color: #ccc;
+            font-size: 24rpx;
+          }
+        }
+      }
+
+      .comment-conent {
+        display: flex;
+        justify-content: space-between;
+        margin-left: 15%;
+        padding: 20rpx;
+        text.comment-text {
+          color: #000;
+        }
+
+        text.iconfont.icondianzan {
+          font-size: 38rpx;
+        }
+      }
+    }
+  }
+}
+
+/* 最热评论 */
+
+.comment-wrap.new {
+  .iconfont {
+    color: #92bdd8;
+    font-size: 40rpx;
   }
 }
 </style>
