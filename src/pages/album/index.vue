@@ -2,7 +2,7 @@
   <view>
     <!-- 专辑背景 start -->
     <view class="album-bg">
-      <image :src="album.cover" mode="widthFix" />
+        <image :src="album.cover" mode="widthFix" />
       <view class="album-title">
         <view class="album-name">{{album.name}}</view>
         <view class="album-btn">关注专辑</view>
@@ -68,6 +68,9 @@ export default {
         }
         this.wallpaper = [...this.wallpaper, ...data.res.wallpaper];
       });
+    },
+    handleSwiperAction(e){
+      console.log(e);
     }
   },
   onLoad(options) {
@@ -85,7 +88,7 @@ export default {
     }
   },
   components: {
-    goDetail
+    goDetail,
   }
 };
 </script>

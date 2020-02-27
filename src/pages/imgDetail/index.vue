@@ -14,7 +14,9 @@
 
     <!-- 图片部分 start -->
     <view class="img-bg">
-      <image :src="imgInfo.thumb" mode="widthFix" />
+      <swiper-action @swiperAction="handleSwiperAction">
+        <image :src="imgInfo.thumb" mode="widthFix" />
+      </swiper-action>
     </view>
     <!-- 图片部分 end -->
 
@@ -103,9 +105,13 @@
 
 <script>
 import moment from "moment";
+import swiperAction from "@/components/swiperAction";
 // 设置语言为中文
 moment.locale("zh-cn");
 export default {
+  components: {
+    swiperAction
+  },
   data() {
     return {
       imgInfo: {},
@@ -139,6 +145,9 @@ export default {
           v => (v.cnTime = moment(v.atime * 1000).fromNow())
         );
       });
+    },
+    handleSwiperAction(e){
+      console.log(e);
     }
   }
 };
