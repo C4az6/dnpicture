@@ -63,6 +63,9 @@
               <view class="user-nikename">{{item.user.name}}</view>
               <view class="user-time">{{item.cnTime}}</view>
             </view>
+            <view class="user-badge">
+              <image v-for="item2 in item.user.title" :key="item2.icon" :src="item2.icon" />
+            </view>
           </view>
           <view class="comment-conent">
             <text class="comment-text">{{item.content}}</text>
@@ -90,6 +93,9 @@
             <view class="user-name">
               <view class="user-nikename">{{item.user.name}}</view>
               <view class="user-time">{{item.cnTime}}</view>
+            </view>
+            <view class="user-badge">
+              <image v-for="item2 in item.user.title" :key="item2.icon" :src="item2.icon" />
             </view>
           </view>
           <view class="comment-conent">
@@ -128,7 +134,7 @@ export default {
   },
   methods: {
     getList() {
-      const {imgList} = getApp().globalData;
+      const { imgList } = getApp().globalData;
       this.imgInfo = imgList[this.imgIndex];
       this.imgInfo.cntime = moment(this.imgInfo.atime * 1000).fromNow();
       this.getComments(this.imgInfo.id);
@@ -150,7 +156,7 @@ export default {
       });
     },
     handleSwiperAction(e) {
-      const {imgList} = getApp().globalData;
+      const { imgList } = getApp().globalData;
       /* 
         1 用户左滑 加载上一页 
         2 用户右滑 加载下一页
@@ -159,13 +165,13 @@ export default {
         5 调用函数前判断用户的手势操作
       */
       // imgList.length - 1是因为imgIndex是从0开始计算的
-      if(e.direction === 'left' && imgList.length-1 >this.imgIndex){
+      if (e.direction === "left" && imgList.length - 1 > this.imgIndex) {
         this.imgIndex++;
         this.getList();
-      }else if(e.direction === 'right' && this.imgIndex > 0) {
+      } else if (e.direction === "right" && this.imgIndex > 0) {
         this.imgIndex--;
         this.getList();
-      }else {
+      } else {
         getApp().noDataToast();
         return;
       }
@@ -312,6 +318,14 @@ export default {
           .user-time {
             color: #ccc;
             font-size: 24rpx;
+          }
+        }
+        .user-badge {
+          image {
+            display: inline-block;
+            margin-right: 10rpx;
+            width: 40rpx;
+            height: 40rpx;
           }
         }
       }
