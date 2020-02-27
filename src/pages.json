@@ -7,6 +7,12 @@
 			}
 		},
 		{
+			"path": "pages/img-category/index",
+			"style": {
+				"navigationBarTitleText": "分类详情页面"
+			}
+		},
+		{
 			"path": "pages/demo/index",
 			"style": {
 				"navigationBarTitleText": "学习触屏事件"
