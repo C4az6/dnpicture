@@ -65,7 +65,7 @@ export default {
         this.current = e.currentIndex;
       }
     }
-  },
+  }
 };
 </script>
 
@@ -85,6 +85,7 @@ export default {
     }
   }
   .content {
+    
   }
 }
 </style>

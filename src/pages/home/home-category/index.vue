@@ -1,7 +1,12 @@
 <template>
   <view>
     <view class="category-wrap">
-      <navigator class="category-item" v-for="item in category" :key="item.id" :url="`/pages/img-category/index?id=${item.id}`">
+      <navigator
+        class="category-item"
+        v-for="item in category"
+        :key="item.id"
+        :url="`/pages/imgCategory/index?id=${item.id}`"
+      >
         <image :src="item.cover" mode="aspectFill" />
         <text>{{item.name}}</text>
       </navigator>
@@ -11,10 +16,10 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
       category: []
-    }
+    };
   },
   mounted() {
     // 修改页面的标题
@@ -24,14 +29,12 @@ export default {
     this.getList();
   },
   methods: {
-    getList(){
+    getList() {
       this.request({
         url: "http://157.122.54.189:9088/image/v1/vertical/category"
-      })
-      .then(data=>{
-        console.log(data.res);
-        this.category = data.res.category;
-      })
+      }).then(data => {
+      this.category = data.res.category;
+      });
     }
   }
 };
@@ -57,7 +60,11 @@ export default {
       bottom: 0;
       color: #ffffff;
       // c3 渐变效果
-      background-image: linear-gradient(to right top, rgba(0,0,0,.2), rgba(0,0,0,0));
+      background-image: linear-gradient(
+        to right top,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0)
+      );
       font-size: 34rpx;
       padding-left: 10rpx;
     }
