@@ -16,8 +16,10 @@
         </view>
       </view>
       <scroll-view enable-flex="true" scroll-y @scrolltolower="handleTolower" class="content">
-        <view class="cate-item" v-for="item in vertical" :key="item.id">
-          <image :src="item.thumb" mode="widthFix" />
+        <view class="cate-item" v-for="(item,index) in vertical" :key="item.id">
+          <go-detail :list="vertical" :index="index">
+            <image :src="item.thumb" mode="widthFix" />
+          </go-detail>
         </view>
       </scroll-view>
     </view>
@@ -26,15 +28,17 @@
 
 <script>
 import { uniSegmentedControl } from "@dcloudio/uni-ui";
+import goDetail from "@/components/goDetail";
 export default {
   components: {
-    uniSegmentedControl
+    uniSegmentedControl,
+    goDetail
   },
   data() {
     return {
       items: [
         { title: "最新", order: "new" },
-        { title: "热门", order: "hot"},
+        { title: "热门", order: "hot" }
       ],
       current: 0,
       vertical: [],
@@ -42,7 +46,7 @@ export default {
       params: {
         limit: 30,
         skip: 0,
-        order: 'new'
+        order: "new"
       },
       // 判断是否还有分页数据
       hasLimit: true
@@ -57,37 +61,35 @@ export default {
         this.params.order = this.items[this.current].order;
         this.getList(this.id);
       }
-      
     },
-    handleTolower(){
+    handleTolower() {
       // 触底之后发送请求加载分页数据
-      if(this.hasLimit) {
+      if (this.hasLimit) {
         this.getList(this.id);
-      }else {
+      } else {
         getApp().noDataToast();
         return;
       }
     },
-    getList(id){
+    getList(id) {
       this.request({
         url: `http://157.122.54.189:9088/image/v1/vertical/category/${id}/vertical`,
         data: this.params
-      })
-      .then(data=>{
-        if(data.res.vertical.length === 0) {
+      }).then(data => {
+        if (data.res.vertical.length === 0) {
           this.hasLimit = false;
           getApp().noDataToast();
           return;
         }
-        this.vertical = [...this.vertical,...data.res.vertical];
+        this.vertical = [...this.vertical, ...data.res.vertical];
         this.params.skip += this.params.limit;
-      })
+      });
     }
   },
-  onLoad(options){
+  onLoad(options) {
     this.id = options.id;
-    this.getList(this.id); 
-  },
+    this.getList(this.id);
+  }
 };
 </script>
 

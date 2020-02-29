@@ -85,7 +85,6 @@ export default {
     }
   }
   .content {
-    
   }
 }
 </style>
